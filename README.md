@@ -1,1 +1,1 @@
-# hardness_aware_fann_benchmarking
+# hardness_controlled_fann_benchmarking
