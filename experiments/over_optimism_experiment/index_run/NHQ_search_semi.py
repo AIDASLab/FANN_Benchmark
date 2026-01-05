@@ -1,0 +1,286 @@
+from tqdm import tqdm
+import time
+import numpy as np
+import random
+import hnswlib
+from tqdm import tqdm
+import time
+import json
+import os 
+import shutil
+import re
+import subprocess
+import matplotlib.pyplot as plt
+
+
+# dataset_name = "sift1m"
+def parse_conditions(cond_dict):
+    """test['conditions']에서 (attr, value) 쌍을 list로 추출"""
+    # 현재 구조는 반드시 'and': [ ... ] 만 지원한다고 가정
+    conditions = []
+    if "and" in cond_dict:
+        for cond in cond_dict["and"]:
+            for attr, value_dict in cond.items():
+                # value_dict: {'match': {'value': XXX}}
+                v = value_dict.get("match", {}).get("value")
+                if v is not None:
+                    conditions.append((attr, v))
+    # 향후 or, not 등 확장 가능
+    return conditions
+def save_gt_ivecs(filename, gt_list):
+    with open(filename, 'wb') as f:
+        for row in gt_list:
+            arr = np.array(row, dtype=np.int64)
+            arr[arr == 4294967295] = -1
+            arr = arr.astype(np.int32)
+            K = len(arr)
+            f.write(np.array([K], dtype=np.int32).tobytes())
+            f.write(arr.tobytes())
+
+import numpy as np
+import os
+
+def write_fvecs(path, vectors):
+    vecs = np.asarray(vectors, dtype=np.float32)
+    if vecs.ndim != 2:
+        raise ValueError("vectors must be a 2D array of shape (n, d)")
+    n, d = vecs.shape
+    # int32 dimension prefix for each vector
+    dim_col = np.full((n, 1), d, dtype=np.int32)
+    # reinterpret float32 bits as int32 (IMPORTANT)
+    vecs_as_int = vecs.view(np.int32)
+    # concatenate [dim | vector]
+    out = np.hstack([dim_col, vecs_as_int])
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    out.tofile(path)
+    print(f"[Saved] {path}")
+
+
+dataset_list = ["arxiv", "LAION1M", "tripclick", "yfcc"]
+
+dataset_list = ["arxiv"]
+# dataset_list = ["sift1m_UNG_modi"]
+
+NHQ_trade_off = {}
+while True:
+    for dataset in dataset_list:
+        print("processing:", dataset)
+        # original_data_path = f"/home/ec2-user/hybrid_hardness/Benchmark/{dataset_name}_original"
+        
+        data_path = f"/home/ec2-user/hybrid_hardness/semi-real/filterbenchmark/{dataset}"
+        mid_path = os.path.join(data_path, "mid_format")
+        NHQ_path = os.path.join(data_path, "nhq_format_new")
+        if dataset == "sift_high" or dataset == "sift_low" or dataset == "gist_high" or dataset == "gist_low":
+            hardness_path = data_path
+            payloads_path = os.path.join(hardness_path, 'payloads_all.jsonl')
+        else:    
+            hardness_path = os.path.join(data_path, "hardness_format")
+            payloads_path = os.path.join(hardness_path, 'payloads.jsonl')
+            mapping_path = os.path.join(data_path, "mid_format/mapping.json")    
+
+        tests = []
+        test_path = os.path.join(hardness_path, "tests.jsonl")
+        with open(test_path, "r") as f:
+            for line in f:
+                tests.append(json.loads(line))
+        
+        num_query = len(tests)
+
+        query_vector = []
+        for test in tests:
+            query_vector.append(test["query"])
+        
+
+        vector_npy_path = os.path.join(hardness_path, "vectors.npy")
+        vector_npy = np.load(vector_npy_path)
+        print(f"vector loaded: {vector_npy.shape}")
+        
+
+        base_vector = os.path.join(mid_path, f"base_vector_NHQ.fvecs")
+        query_fvecs = os.path.join(mid_path, f"query_vector_NHQ.fvecs")
+
+        write_fvecs(base_vector, vector_npy)
+        write_fvecs(query_fvecs, query_vector)
+
+        with open(mapping_path, "r") as f:
+            mapping = json.load(f)
+
+            
+        num_attribute = len(mapping)
+        print("number attribute: ", num_attribute)
+
+        with open(payloads_path, 'r') as fin:
+            lines = fin.readlines()
+
+        output_path = os.path.join(mid_path, 'base_label_NHQ.txt')
+        # with open(output_path, 'w') as fout:
+        #     ################## 이부분 동작 확임
+        #     fout.write(f"{len(lines)} {num_attribute}\n")  # 첫 줄: 데이터 개수, 속성 개수
+        #     for line in lines:
+        #         payload = json.loads(line)
+        #         row = []
+        #         for i in range(1, num_attribute + 1):
+        #             key = f"label_{i}"
+        #             value = payload.get(key, 0)
+        #             row.append(str(value))
+        #         fout.write(" ".join(row) + "\n")
+        with open(output_path, 'w') as fout:
+            ################## 이부분 동작 확임
+            fout.write(f"{len(lines)} {num_attribute}\n")  # 첫 줄: 데이터 개수, 속성 개수
+            for line in lines:
+                payload = json.loads(line)
+                row = [0] * num_attribute
+                for attr, value in payload.items():
+                    key = f"{attr}:{value}"
+                    idx = mapping.get(key)
+                    row[int(idx) - 1] = 1
+                fout.write(" ".join(str(v) for v in row) + "\n")
+        
+        tests_path = os.path.join(hardness_path, 'tests.jsonl')
+        output_path = os.path.join(mid_path, 'query_label_NHQ.txt')
+
+        print("[Step] Extracting query labels...")
+        all_labels = []
+        with open(tests_path, 'r') as fin:
+            for line in fin:
+                if not line.strip():
+                    continue
+                test = json.loads(line)
+                labels = [0] * num_attribute
+                # conditions = test["conditions"].get("and", [])
+                attr_value_pairs = parse_conditions(test["conditions"])
+                for attr, value in attr_value_pairs:
+                    key = f"{attr}:{value}"
+                    idx = mapping.get(key)
+                    if idx is not None:
+                        # mapping이 1-based 인덱스라고 했으므로 -1
+                        labels[int(idx) - 1] = 1
+                    else:
+                        # mapping에 없는 값은 무시
+                        pass
+                all_labels.append(labels)
+
+        with open(output_path, 'w') as fout:
+            num_rows = len(all_labels)
+            num_cols = num_attribute
+            fout.write(f"{num_rows} {num_cols}\n")
+            for labels in all_labels:
+                fout.write(" ".join(str(v) for v in labels) + "\n")
+
+        tests = []
+        with open(tests_path, 'r') as fin:
+            for line in fin:
+                tests.append(json.loads(line))
+
+        print(f"[Data] Loaded {len(tests):,} test cases")
+
+        gt_list = [t["closest_ids"] for t in tests]
+        save_gt_ivecs(os.path.join(mid_path, "gt.ivecs"), np.array(gt_list))
+        print("[Data] Saved groundtruth (gt.ivecs)")
+
+        print("[Index] Building NHQ index...")
+            
+        
+        base_label = os.path.join(mid_path, "base_label_NHQ.txt")
+
+        os.makedirs(os.path.join(NHQ_path, "NHQ_index"), exist_ok=True)
+        maxm0_list = [10, 20, 30, 40, 50, 100, 200, 300]
+        efc_list = [30, 50, 70, 100, 150, 300, 500, 700]
+        # maxm0_list = [10, 20, 30]
+        # efc_list = [30, 50, 70]
+
+        # for maxm0, efc in zip(maxm0_list, efc_list):
+        #     curr_index_path = os.path.join(NHQ_path, "NHQ_index", f"M{maxm0}_ef{efc}")
+        #     os.makedirs(curr_index_path, exist_ok=True)
+
+        #     index_bin_path = os.path.join(curr_index_path, "index.bin")
+        #     index_txt_path = os.path.join(curr_index_path, "index.txt")
+
+        #     args = [
+        #         "NHQ-NPG_nsw",
+        #         base_vector,
+        #         base_label,
+        #         index_bin_path,
+        #         index_txt_path,
+        #         str(maxm0),
+        #         str(efc),
+        #     ]
+
+        #     input_str = "\n".join(args) + "\n"
+        #     cmd = ["python", "test_hybrid_query.py", "build"]
+        #     workdir = "/home/ec2-user/hybrid_hardness/methods/NHQ"
+
+        #     subprocess.run(
+        #         cmd,
+        #         input=input_str,
+        #         text=True,
+        #         capture_output=True,
+        #         cwd=workdir
+        #     )
+
+        #     print(f"  ├─ [Index] M={maxm0}, efC={efc} → build complete ✅")
+
+        print("\n[Query] Running hybrid query tests...")
+        nhq_index_root = os.path.join(NHQ_path, "NHQ_index")
+
+        
+        query_label = os.path.join(mid_path, "query_label_NHQ.txt")
+        gt_ivecs = os.path.join(mid_path, "gt.ivecs")
+
+
+
+        NHQ_trade_off[dataset] = {}
+        for idx_dir in sorted(os.listdir(nhq_index_root)):
+            idx_path = os.path.join(nhq_index_root, idx_dir)
+            if not os.path.isdir(idx_path):
+                continue
+
+            bin_path = os.path.join(idx_path, "index.bin")
+            txt_path = os.path.join(idx_path, "index.txt")
+
+            args = [
+                "NHQ-NPG_nsw",
+                bin_path,
+                txt_path,
+                query_fvecs,
+                query_label,
+                gt_ivecs
+            ]
+            input_str = "\n".join(args) + "\n"
+            cmd = ["python", "test_hybrid_query.py", "search"]
+            workdir = "/home/ec2-user/hybrid_hardness/methods/NHQ"
+
+            result = subprocess.run(
+                cmd,
+                input=input_str,
+                text=True,
+                capture_output=True,
+                cwd=workdir
+            )
+
+            output = result.stderr
+            # print(output)
+
+            m_match = re.search(r'M(\d+)_ef(\d+)', idx_dir)
+            if not m_match:
+                continue
+            M = int(m_match.group(1))
+            ef = int(m_match.group(2))
+            found = re.findall(r"Search Time.*?([\d.]+).*?accuracy.*?([\d.]+)", output)
+            if not found:
+                print(f"  ├─ [Skip] M={M}, ef={ef} → result not found ⚠️")
+                continue
+
+            for search_time, accuracy in found:
+                NHQ_trade_off[dataset][(M, ef)] = {
+                    "qps": num_query / float(search_time),
+                    "avg_recall": float(accuracy)
+                }
+                print(f"  ├─ [Result] M={M}, ef={ef} | Time={search_time}s | Acc={accuracy}")
+
+    import pickle
+    with open(os.path.join(".", "NHQ_trade_off_result_arxiv.pkl"), "wb") as f:
+        pickle.dump(NHQ_trade_off, f)
+
+
+    print("save done", os.path.join(".", "NHQ_trade_off_result_semi_LAION1M.pkl"))
