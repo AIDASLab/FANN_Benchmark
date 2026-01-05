@@ -1,0 +1,7 @@
+.vscode/
+
+*.log
+*.tar.gz
+*.pdf
+
+build/
