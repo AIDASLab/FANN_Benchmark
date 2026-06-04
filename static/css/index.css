@@ -1,3 +1,10 @@
+:root {
+  --accent: #7C3AED;
+  --accent-dark: #6D28D9;
+  --accent-grad: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+  --accent-bg: #F5F3FF;
+}
+
 body {
   font-family: 'Noto Sans', sans-serif;
 }
@@ -154,4 +161,173 @@ body {
 }
 #interpolation-image-wrapper img {
   border-radius: 5px;
+}
+
+/* ===== Results section ===== */
+.result-card {
+  background: #fff;
+  border: 1px solid #ededed;
+  border-radius: 12px;
+  padding: 1.75rem 1.75rem 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.result-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+}
+.result-badge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: var(--accent-grad);
+  color: #fff;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 3px 10px rgba(124, 58, 237, 0.35);
+}
+.result-theme {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #1a1a1a;
+}
+.result-figref {
+  margin-left: auto;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.result-card figure.image {
+  margin: 0.25rem 0 1.1rem;
+}
+.result-caption {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.finding {
+  position: relative;
+  background: var(--accent-bg);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.92rem;
+  color: #444;
+  line-height: 1.55;
+}
+.finding .finding-label {
+  display: inline-block;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  margin-right: 0.4rem;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+/* ===== Method section ===== */
+.method-card {
+  background: #fff;
+  border: 1px solid #ededed;
+  border-radius: 12px;
+  padding: 1.75rem 1.75rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+}
+.method-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+}
+.method-head .result-figref {
+  margin-left: auto;
+}
+.method-card p {
+  color: #333;
+  line-height: 1.7;
+}
+.eq-block {
+  position: relative;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 1.1rem 2.6rem 1.1rem 1.25rem;
+  margin: 1.1rem 0;
+  text-align: center;
+  overflow-x: auto;
+  font-size: 1.05rem;
+}
+.eq-block .eq-num {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #c4c4c4;
+  font-size: 0.8rem;
+  font-family: 'Google Sans', sans-serif;
+}
+.eq-lead {
+  text-align: center;
+  color: #555 !important;
+  font-size: 0.95rem;
+  margin: 0.75rem 0 0.25rem;
+}
+.frac {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0 0.15rem;
+}
+.frac > .num {
+  display: block;
+  border-bottom: 1px solid #555;
+  padding: 0 6px;
+}
+.frac > .den {
+  display: block;
+  padding: 0 6px;
+}
+.mode-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.mode-box {
+  flex: 1 1 0;
+  min-width: 240px;
+  background: var(--accent-bg);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+}
+.mode-box .mode-title {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+.mode-box p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin: 0;
 }

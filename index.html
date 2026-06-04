@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <!-- Meta: paper description and keywords -->
   <meta name="description"
-        content="This is a description of the research paper.">
-  <meta name="keywords" content="Keyword1, Keyword2, Keyword3">
+        content="A hardness-controlled benchmark generator for filtered approximate nearest neighbor (FANN) search. We introduce alpha-Hardness, an execution-driven query-level hardness metric, and HCBGen, a generator that synthesizes hybrid workloads with controllable difficulty for realistic and privacy-preserving evaluation.">
+  <meta name="keywords" content="Filtered ANN, FANN, Hybrid Search, Vector Search, Benchmark Generator, Query Hardness, alpha-Hardness, HCBGen, Approximate Nearest Neighbor">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Paper title -->
-  <title>Title</title>
+  <title>Revisiting Filtered ANN Benchmarks: A Hardness-Controlled Benchmark Generator</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -28,11 +28,14 @@
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
 
-  <!-- Gradio -->
-  <script
-	  type="module"
-	  src="https://gradio.s3-us-west-2.amazonaws.com/5.42.0/gradio.js"
-  ></script>
+  <!-- MathJax for LaTeX rendering -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -63,40 +66,37 @@
       <div class="columns is-centered">
         <div class="column has-text-centered">
           <!-- Paper Title -->
-          <h1 class="title is-1 publication-title">Paper Title</h1>
+          <h1 class="title is-1 publication-title">Revisiting Filtered ANN Benchmarks: A Hardness-Controlled Benchmark Generator for Realistic Evaluation</h1>
 
           <!-- Conference Name and Year -->
-          <h1 class="title is-4 publication-title" style="color: #FF0066;">
-            Conference Name, Year
+          <h1 class="title is-4 publication-title" style="color: #7C3AED;">
+            VLDB, 2026
           </h1>
 
           <!-- Authors and Affiliations -->
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-              <a href="https://...">Author1</a><sup>1</sup>,</span>
+              <a href="mailto:victorlim@snu.ac.kr">Mintaek Lim</a><sup>1</sup>,</span>
             <span class="author-block">
-              <a href="https://...">Author2</a><sup>1</sup>,</span>
+              <a href="mailto:kdg6245@snu.ac.kr">Dogeun Kim</a><sup>1</sup>,</span>
             <span class="author-block">
-              <a href="https://...">Author3</a><sup>2</sup>,
+              <a href="mailto:danny5969@snu.ac.kr">Minwoo Kim</a><sup>1</sup>,
             </span>
             <span class="author-block">
-              <a href="http://...">Author4</a><sup>2</sup>,
-            </span>
-            <span class="author-block">
-              <a href="https://...">Author5</a><sup>1,2</sup>
+              <a href="mailto:jaeyoung.do@snu.ac.kr">Jaeyoung Do</a><sup>1,*</sup>
             </span>
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>Seoul National University,</span>
-            <span class="author-block"><sup>2</sup>Microsoft Research</span>
+            <span class="author-block"><sup>1</sup>Seoul National University</span>
+            <span class="author-block">&nbsp;&nbsp;<sup>*</sup>Corresponding author</span>
           </div>
 
           <div class="column has-text-centered">
             <div class="publication-links">
               <!-- Paper Link. -->
               <span class="link-block">
-                <a href="https://... (학회 논문 링크)"
+                <a href="https://www.vldb.org/pvldb/"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -106,7 +106,7 @@
               </span>
               <!-- Arxiv Link. -->
               <span class="link-block">
-                <a href="https://arxiv.org/abs/... (arxiv 논문 링크)"
+                <a href="https://arxiv.org/"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="ai ai-arxiv"></i>
@@ -114,44 +114,14 @@
                   <span>arXiv</span>
                 </a>
               </span>
-              <!-- Model Link. -->
-              <span class="link-block">
-                <a href="https://huggingface.co/models/... (모델 링크)"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="far fa-share-square"></i>
-                  </span>
-                  <span>Model</span>
-                  </a>
-              </span>
               <!-- Code Link. -->
               <span class="link-block">
-                <a href="https://github.com/... (코드 링크)"
+                <a href="https://github.com/yoon123seul/hardness_aware_fann_benchmarking"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
                   </span>
                   <span>Code</span>
-                  </a>
-              </span>
-              <!-- Demo Link. -->
-              <span class="link-block">
-                <a href="https://huggingface.co/spaces/... (데모 링크)"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="far fa-images"></i>
-                  </span>
-                  <span>Demo</span>
-                  </a>
-              </span>
-              <!-- Dataset Link. -->
-              <span class="link-block">
-                <a href="https://huggingface.co/datasets/... (데이터셋 링크)"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-database"></i>
-                  </span>
-                  <span>Dataset</span>
                   </a>
               </span>
             </div>
@@ -169,11 +139,13 @@
     <div class="hero-body">
       <!-- main image -->
       <figure class="image">
-        <img src="./static/images/snu-night.jpg"
-             alt="subtitle of the main image">
+        <img src="./static/images/generator.svg"
+             alt="Overview of HCBGen, the hardness-controlled benchmark generator.">
       </figure>
       <h2 class="subtitle has-text-centered" style="margin-top: 20px;">
-        Subtitle of the Main Image
+        <strong>HCBGen</strong> &mdash; a hardness-controlled benchmark generator. It supports Load and
+        Generate modes for base data, and controls query-level hardness using either a target hardness
+        profile or coarse bias modes (High, Low, Random).
       </h2>
     </div>
   </div>
@@ -189,12 +161,21 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="column has-text-justified" style="padding: 0;">
             <p>
-              This is a brief description of the research paper. It summarizes the main contributions and findings of the work.
-              It highlights the key innovations and results that make this research significant.
+              Filtered approximate nearest neighbor (FANN) search must satisfy both vector similarity
+              and structured predicates, yet evaluations remain brittle because real hybrid workloads
+              are rarely shareable and existing benchmarks rely on ad-hoc constructions. We propose
+              <strong>&alpha;-Hardness</strong>, an execution-driven query-level hardness metric that
+              models the conditional execution chain via the over-fetch factor and extends to
+              strategy-conditioned settings. It aligns monotonically with empirical performance, unlike
+              proxies such as selectivity or correlation.
             </p>
             <p>
-              The abstract is designed to give readers a quick overview of the research, allowing them to understand the main points without reading the entire paper.
-              It is often the first section that readers will see, so it should be concise and informative.
+              We further introduce <strong>HCBGen</strong>, a hardness-controlled benchmark generator
+              that uses &alpha;-Hardness as a control signal to synthesize workloads under coarse bias
+              modes or to match a target hardness profile. Our experiments show that widely used
+              benchmarks occupy a narrow, easy portion of the hardness spectrum, and that matching
+              hardness distributions yields privacy-preserving proxy workloads that closely reproduce
+              performance trends.
             </p>
         </div>
       </div>
@@ -202,21 +183,30 @@
   </div>
 </section>
 
-<!-- Demo -->
+<!-- Contributions -->
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Demo</h2>
-        <p>
-          This section provides an interactive demo of the research. You can try out the model and see how it works in real-time.
-          The demo allows you to input data and observe the model's predictions or outputs.
-        </p>
-        <!-- HF Space Link -->
-        <gradio-app src="https://ever2after-test.hf.space"></gradio-app>
+        <h2 class="title is-3">Contributions</h2>
+        <div class="content has-text-justified">
+          <ul>
+            <li>
+              <strong>&alpha;-Hardness</strong> &mdash; an execution-driven metric capturing query-level
+              FANN difficulty via the over-fetch factor, closely aligned with empirical performance.
+            </li>
+            <li>
+              <strong>Revisiting benchmarks</strong> &mdash; we show widely used evaluations are biased
+              toward easy queries, masking tail behavior.
+            </li>
+            <li>
+              <strong>HCBGen</strong> &mdash; a hardness-controlled generator for controlled workload
+              construction, stress testing, and privacy-preserving approximation of real workloads.
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -225,22 +215,80 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Method</h2>
-        <div class="content has-text-justified">
+        <h2 class="title is-3" style="margin-bottom: 2.5rem;">Method</h2>
+
+        <!-- Method 1: alpha-Hardness -->
+        <div class="method-card">
+          <div class="method-head">
+            <span class="result-badge"><i class="fas fa-bullseye"></i></span>
+            <span class="result-theme">&alpha;-Hardness</span>
+            <span class="result-figref">Metric</span>
+          </div>
           <p>
-            This section provides a detailed explanation of the methodology used in the research.
-            It describes the techniques, algorithms, and approaches that were employed to achieve the results.
+            We model FANN execution as a post-filtering <em>conditional chain</em>: fetch top-ranked
+            vector candidates, then scan until $K$ filter-satisfying results are found. The
+            <strong>over-fetch factor</strong> $\alpha(q;K)$ is the rank of the $K$-th valid candidate,
+            and hardness is the multiplicative cost of the two stages:
           </p>
+
+          <div class="eq-block">
+            <span class="eq-num">(1)</span>
+            \[ H_{\alpha}(q \mid K) \;\triangleq\; H_{\text{fetch}}\big(q_v \mid \alpha(q;K)\big) \,\times\, H_{\text{scan}}\big(q_f \mid q_v, \alpha(q;K), K\big) \]
+          </div>
+
+          <p class="eq-lead">
+            With $H_{\text{scan}} \propto C_{\text{scan}} \cdot m$, substituting $m = \alpha(q;K)$ gives:
+          </p>
+          <div class="eq-block">
+            <span class="eq-num">(2)</span>
+            \[ H_{\alpha}(q \mid K) \;\propto\; H_{\text{fetch}}\big(q_v \mid \alpha(q;K)\big) \cdot \alpha(q;K) \]
+          </div>
+
+          <p class="eq-lead">
+            Since $\alpha$ is unknown a priori, we estimate it <strong>index-free</strong> from global
+            selectivity $s$ and a local-density correction $\rho(q)$:
+          </p>
+          <div class="eq-block">
+            <span class="eq-num">(3)</span>
+            \[ \hat{\alpha}(q;K) \;\triangleq\; \frac{1}{s} \cdot \frac{1}{\rho(q)} \cdot K \;=\; \frac{|V_0|}{|V_f|} \cdot \frac{d\big(q_v,\, K\text{-NN} \mid V_0\big)}{d\big(q_v,\, K\text{-NN} \mid V_f\big)} \cdot K \]
+          </div>
+
           <p>
-            The method section is crucial for understanding how the research was conducted and how the findings were obtained.
+            so a globally selective (small $|V_f|$) <em>or</em> locally sparse filter both raise
+            $\hat{\alpha}$. Finally, the score is <strong>strategy-conditioned</strong> by a monotone
+            inversion &mdash; vector-centric strategies get harder with $\alpha$, while filter-centric
+            ones get easier:
           </p>
+          <div class="eq-block">
+            <span class="eq-num">(4)</span>
+            \[ H(q \mid \text{strategy}) \;=\; \begin{cases} H_{\alpha}(q), & \text{if vector-centric}\\[4pt] 1 / H_{\alpha}(q), & \text{if filter-centric} \end{cases} \]
+          </div>
         </div>
-        <!-- Diagram or Illustration of Method -->
-        <figure class="image">
-          <img src="./static/images/snu-night.jpg" style="max-width:70%;margin-right:auto;margin: 50px auto 0 auto;"
-               alt="Diagram illustrating the method used in the research">
-        </figure>
-        <h3 class="has-text-centered" style="margin-top: 20px;">Caption of the Method Diagram</h3>
+
+        <!-- Method 2: HCBGen -->
+        <div class="method-card">
+          <div class="method-head">
+            <span class="result-badge"><i class="fas fa-cogs"></i></span>
+            <span class="result-theme">HCBGen</span>
+            <span class="result-figref">Generator</span>
+          </div>
+          <p>
+            HCBGen separates a <strong>Label Generator</strong> (proposes candidate queries; supports
+            <em>Load</em> and <em>Generate</em> base-data modes) from a <strong>Hardness Estimator</strong>
+            (classifies the strategy's pruning family, scores candidates, and enforces acceptance through a
+            regeneration loop). Two control families share this loop:
+          </p>
+          <div class="mode-grid">
+            <div class="mode-box">
+              <div class="mode-title"><i class="fas fa-sliders-h"></i>&nbsp; Coarse bias modes</div>
+              <p>High / Low / Random skew the workload toward hard or easy queries via an adaptive cutoff.</p>
+            </div>
+            <div class="mode-box">
+              <div class="mode-title"><i class="fas fa-chart-area"></i>&nbsp; Profile matching</div>
+              <p>Match-PDF reproduces a target hardness distribution by binning difficulty and filling target counts.</p>
+            </div>
+          </div>
+        </div>
       </div>
 </section>
 
@@ -249,66 +297,91 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Results</h2>
-        <div class="content has-text-justified">
-          <p>
-            This section provides a detailed explanation of the results obtained from the research.
-            It describes the key findings, insights, and contributions of the work.
+        <h2 class="title is-3" style="margin-bottom: 2.5rem;">Results</h2>
+
+        <!-- Result 1: hardness alignment (Figure 3) -->
+        <div class="result-card">
+          <div class="result-head">
+            <span class="result-badge">1</span>
+            <span class="result-theme">Hardness Alignment</span>
+            <span class="result-figref">Figure 3</span>
+          </div>
+          <figure class="image">
+            <img src="./static/images/figure3.svg"
+                 alt="Spearman rank correlation between hardness estimates and search performance across 25 datasets and six strategies.">
+          </figure>
+          <p class="result-caption">
+            &alpha;-Hardness aligns monotonically with empirical performance (&rho; closer to &minus;1)
+            across 25 datasets and six strategies, while selectivity and correlation are unstable or
+            strategy-inconsistent.
           </p>
-          <p>
-            The results section is essential for understanding the impact of the research and how it advances the field.
-            It often includes data, figures, and tables to illustrate the findings.
+          <div class="finding">
+            <span class="finding-label">Finding</span>
+            &alpha;-Hardness reaches &rho; &le; &minus;0.7 with no alignment failures in the
+            [&minus;0.3, 0.3] region, whereas selectivity flips sign between vector- and filter-centric
+            strategies and correlation is informative only when strong data&ndash;label correlation is
+            explicitly enforced.
+          </div>
+        </div>
+
+        <!-- Result 2: robustness (Figure 6) -->
+        <div class="result-card">
+          <div class="result-head">
+            <span class="result-badge">2</span>
+            <span class="result-theme">Robustness Across Workloads</span>
+            <span class="result-figref">Figure 6</span>
+          </div>
+          <figure class="image">
+            <img src="./static/images/figure6.svg"
+                 alt="Recall-QPS trade-off curves for five strategies across synthetic, semi-real, and hardness-controlled workloads.">
+          </figure>
+          <p class="result-caption">
+            Strategy rankings and trade-off shapes vary substantially across workloads. Results reported
+            in original papers (red) align with easier regions, and High workloads expose sharp
+            degradation.
           </p>
-          <!-- table example -->
-          <table class="table is-striped is-hoverable is-fullwidth has-text-centered">
-            <thead>
-              <tr>
-              <th rowspan="2">Baseline</th>
-              <th colspan="2">Classification</th>
-              <th colspan="2">Detection</th>
-              <th rowspan="2">Latency (ms/img)</th>
-              </tr>
-              <tr>
-              <th>Accuracy (%)</th>
-              <th>F1</th>
-              <th>mAP@50</th>
-              <th>mAP@50:95</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-              <th>ResNet50</th>
-              <td>92.1</td>
-              <td>0.89</td>
-              <td>54.3</td>
-              <td>34.2</td>
-              <td>12.4</td>
-              </tr>
-              <tr>
-              <th>ViT-B</th>
-              <td>94.7</td>
-              <td>0.92</td>
-              <td>58.9</td>
-              <td>38.1</td>
-              <td>18.7</td>
-              </tr>
-              <tr class="has-background-light">
-              <th>Ours</th>
-              <td><strong>96.3</strong></td>
-              <td><strong>0.94</strong></td>
-              <td><strong>63.5</strong></td>
-              <td><strong>42.7</strong></td>
-              <td>15.2</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-              <td colspan="6" class="has-text-grey is-size-6">
-                Higher is better for Accuracy / F1 / mAP. Lower is better for latency.
-              </td>
-              </tr>
-            </tfoot>
-          </table>
+          <div class="finding">
+            <span class="finding-label">Finding</span>
+            Under High workloads recall drops below 0.2 for most indices &mdash; consistent with the
+            sub-0.1% selectivity regime &mdash; revealing robustness gaps that the easy slices used in
+            prior benchmarks hide.
+          </div>
+        </div>
+
+        <!-- Result 3: hardness as a bridge (Figure 8) -->
+        <div class="result-card">
+          <div class="result-head">
+            <span class="result-badge">3</span>
+            <span class="result-theme">Hardness as a Bridge</span>
+            <span class="result-figref">Figure 8</span>
+          </div>
+          <figure class="image">
+            <img src="./static/images/figure8.svg"
+                 alt="Recall-QPS trade-offs on four semi-real datasets comparing original workloads with Match-PDF proxy workloads.">
+          </figure>
+          <p class="result-caption">
+            Match-PDF proxy workloads reproduce the performance trends of the original workloads &mdash;
+            even without access to the base data &mdash; enabling privacy-preserving benchmarking.
+          </p>
+          <div class="finding">
+            <span class="finding-label">Finding</span>
+            Proxy workloads match the target hardness distribution (low KS and 1-Wasserstein distances)
+            and track the original Recall&ndash;QPS curves closely on all four semi-real datasets, so a
+            shareable hardness profile alone suffices to emulate an unseen workload.
+          </div>
+        </div>
+
+        <!-- More results pointer -->
+        <p class="has-text-centered has-text-grey" style="margin-top: 1rem; margin-bottom: 1.25rem;">
+          For more detailed experiments and findings, please refer to the
+          <a href="https://www.vldb.org/pvldb/"><strong>full paper</strong></a>.
+        </p>
+        <div class="has-text-centered">
+          <a href="https://www.vldb.org/pvldb/"
+             class="external-link button is-normal is-rounded is-dark">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>Read the full paper</span>
+          </a>
         </div>
       </div>
 </section>
@@ -317,11 +390,14 @@
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@misc{example2025,
-  author    = {Author1, Author2 and Author3, Author4 and Author5},
-  title     = {Paper Title},
-  journal   = {Journal Name},
-  year      = {2025},
+    <pre><code>@article{lim2026fann,
+  author  = {Lim, Mintaek and Kim, Dogeun and Kim, Minwoo and Do, Jaeyoung},
+  title   = {Revisiting Filtered ANN Benchmarks: A Hardness-Controlled Benchmark
+             Generator for Realistic Evaluation},
+  journal = {Proceedings of the VLDB Endowment (PVLDB)},
+  volume  = {14},
+  number  = {1},
+  year    = {2026},
 }</code></pre>
   </div>
 </section>
