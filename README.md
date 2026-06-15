@@ -1,7 +1,32 @@
-# AIDAS Lab Project Page Template
+# Project Page — Revisiting Filtered ANN Benchmarks
 
-This repository hosts the source code for the AIDAS Lab Project Page.
-The template was originally derived from [Nerfies](https://nerfies.github.io).
+This branch (`gh-pages`) hosts the **project website** for our paper introducing **α-Hardness** and
+**HCBGen**. It contains only the static site; the research code lives on the
+[`main`](https://github.com/AIDAS-Lab/FANN_Benchmark/tree/main) branch.
 
-# Website License
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+🌐 **Live site:** https://aidas-lab.github.io/FANN_Benchmark/
+
+## Contents
+
+```
+index.html        # the page
+static/css/        static/js/        static/images/   # assets (figures as SVG)
+server.py         # optional local preview server
+```
+
+## Preview locally
+
+```bash
+# any static server works, e.g.:
+python3 -m http.server 8000
+# then open http://localhost:8000/index.html
+```
+
+> Equations are rendered with [MathJax](https://www.mathjax.org/) (loaded from CDN, so a network
+> connection is needed for math to display). The site is adapted from the
+> [Nerfies](https://github.com/nerfies/nerfies.github.io) template (CC BY-SA 4.0).
+
+## Deployment
+
+Served via **GitHub Pages** from this branch (`gh-pages`, root). Pushing to `gh-pages` updates the
+live site automatically.
