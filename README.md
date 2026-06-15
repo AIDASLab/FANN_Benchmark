@@ -9,7 +9,7 @@ benchmark generator.
 > metric that aligns with real search performance, and use it to generate controllable, realistic, and
 > privacy-preserving FANN benchmarks.
 
-📄 [Paper](https://www.vldb.org/pvldb/) · 🌐 [Project Page](https://aidas-lab.github.io/FANN_Benchmark/) · 📊 VLDB 2026
+📄 [Paper](https://arxiv.org/abs/2606.14193) · 🌐 [Project Page](https://aidas-lab.github.io/FANN_Benchmark/) · 📊 VLDB 2026
 
 ---
 
