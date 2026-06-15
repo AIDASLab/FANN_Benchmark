@@ -4,7 +4,7 @@ This branch (`gh-pages`) hosts the **project website** for our paper introducing
 **HCBGen**. It contains only the static site; the research code lives on the
 [`main`](https://github.com/AIDAS-Lab/FANN_Benchmark/tree/main) branch.
 
-🌐 **Live site:** https://aidas-lab.github.io/FANN_Benchmark/
+🌐 **Live site:** https://aidaslab.github.io/FANN_Benchmark/
 
 ## Contents
 
